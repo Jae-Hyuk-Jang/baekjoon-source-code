@@ -19,7 +19,7 @@ int main() {
 			if (st.top().first == num) cnt += st.top().second;
 			st.pop();
 		}
-		if (!st.empty()) ans++;
+		if (!st.empty()) ans++; // num 앞에 num보다 큰 사람 수
 		st.push({ num, cnt });
 	}
 	
