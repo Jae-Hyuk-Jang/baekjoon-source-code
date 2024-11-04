@@ -5,13 +5,11 @@ int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-	int n; cin >> n;
-	for (int i = 2; i * i <= n; i++) {
-		while (!(n % i)) {
-			cout << i << '\n';
-			n /= i;
-		}
+	int t = 1;
+	while (1) {
+		int L, P, V; cin >> L >> P >> V;
+		if (V == 0)break;
+		cout << "Case " << t++ << ": " << V / P * L + min(V % P, L) << '\n';
 	}
-	if (n != 1) cout << n;
 	return 0;
 }
