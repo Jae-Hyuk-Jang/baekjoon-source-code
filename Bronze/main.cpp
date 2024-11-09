@@ -2,10 +2,15 @@
 using namespace std;
 
 int main() {
-    while (1) {
-        int a, b; cin >> a >> b;
-        if (a == 0 && b == 0) break;
-        cout << a + b << '\n';
-    }
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, cnt = 0;
+    cin >> n;
+    n = (~n + 1) ^ n;
+    for (int i = 0; i < 32; i++)
+        if ((n >> i) & 1) cnt++;
+    cout << cnt;
+
     return 0;
 }
