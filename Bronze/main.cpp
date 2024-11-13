@@ -5,14 +5,10 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    int t; cin >> t;
-    int mini = 1e9;
-    int maxi = -1e9;
-    while (t--) {
-        int n; cin >> n;
-        mini = min(mini, n);
-        maxi = max(maxi, n);
-    }
-    cout << mini << ' ' << maxi;
+	int t; string s;
+	cin >> t >> s;
+	int sum = 0;
+	for (int i = 0; i < t; i++) sum += s[i] - '0';
+	cout << sum;
     return 0; 
 }
