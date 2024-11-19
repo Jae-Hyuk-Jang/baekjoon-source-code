@@ -11,7 +11,7 @@ int main() {
 		if (!checked[i])continue;
 		for (int j = i; j <= n; j += i) {
 			if (!checked[j]) continue;
-			checked[j] = true;
+			checked[j] = false;
 			k--;
 			if (!k) {
 				cout << j;
