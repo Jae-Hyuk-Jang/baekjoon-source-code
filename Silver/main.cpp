@@ -5,21 +5,17 @@ using namespace std;
 int N, M;
 int arr[MX];
 vector<int> res;
-bool check[MX];
 
-void dfs() {
-	if (res.size() == M) {
+void dfs(int idx, int cnt) {
+	if (cnt == M) {
 		for (auto a : res) cout << a << ' ';
 		cout << '\n';
 		return;
 	}
 
-	for (int i = 1; i <= N; i++) {
-		if (check[i]) continue;
-		check[i] = true;
+	for (int i = idx + 1; i <= N; i++) {
 		res.push_back(arr[i]);
-		dfs();
-		check[i] = false;
+		dfs(i, cnt + 1);
 		res.pop_back();
 	}
 }
@@ -33,7 +29,11 @@ int main() {
 	for (int i = 1; i <= N; i++) cin >> arr[i];
 	sort(arr + 1, arr + 1 + N);
 
-	dfs();
+	for (int i = 1; i <= N; i++) {
+		res.push_back(arr[i]);
+		dfs(i, 1);
+		res.pop_back();
+	}
 
 	return 0;
 }
