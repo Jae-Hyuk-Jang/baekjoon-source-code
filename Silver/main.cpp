@@ -1,22 +1,27 @@
 #include<bits/stdc++.h>
-#define MX 10
 using namespace std;
 
-int N, M;
-int arr[MX];
-vector<int> res;
+int n, m;
+int arr[10];
+int num[10];
+bool isused[10];
 
-void dfs(int idx, int cnt) {
-	if (cnt == M) {
-		for (auto a : res) cout << a << ' ';
+void func(int k) {
+	if (k == m) {
+		for (int i = 0; i < m; i++) cout << arr[i] << ' ';
 		cout << '\n';
 		return;
 	}
 
-	for (int i = idx + 1; i <= N; i++) {
-		res.push_back(arr[i]);
-		dfs(i, cnt + 1);
-		res.pop_back();
+	int tmp = 0;
+	for (int i = 0; i < n; i++) {
+		if (!isused[i] && tmp != num[i]) {
+			isused[i] = true;
+			arr[k] = num[i];
+			tmp = arr[k];
+			func(k + 1); 
+			isused[i] = false;
+		}
 	}
 }
 
@@ -25,15 +30,10 @@ int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-	cin >> N >> M;
-	for (int i = 1; i <= N; i++) cin >> arr[i];
-	sort(arr + 1, arr + 1 + N);
-
-	for (int i = 1; i <= N; i++) {
-		res.push_back(arr[i]);
-		dfs(i, 1);
-		res.pop_back();
-	}
+	cin >> n >> m;
+	for (int i = 0; i < n; i++) cin >> num[i];
+	sort(num, num + n);
+	func(0);
 
 	return 0;
 }
