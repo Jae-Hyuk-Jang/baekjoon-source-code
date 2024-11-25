@@ -19,7 +19,7 @@ void func(int k) {
 			isused[i] = true;
 			arr[k] = num[i];
 			tmp = arr[k];
-			func(k + 1); 
+			func(k + 1);
 			isused[i] = false;
 		}
 	}
