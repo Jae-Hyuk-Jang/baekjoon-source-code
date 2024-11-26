@@ -5,12 +5,21 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    int t; cin >> t;
-    while (t--) {
-        int a, b, result = 1;
-        cin >> a >> b;
-        while (b--) result = (result * a) % 10;
-        cout << ((!result) ? 10 : result) << '\n';
+    int a, b, c; cin >> a >> b >> c;
+    int cnt = 0; int n = b;
+    while (n > 0) {
+        cnt++;
+        n /= 10;
     }
+    int mul = 1;
+    while (cnt > 0) {
+        cnt--;
+        mul *= 10;
+    }
+    cout << a + b - c << '\n';
+    cout << a * mul + b - c;
+ 
+	
     return 0;
 }
+
