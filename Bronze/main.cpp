@@ -1,25 +1,21 @@
-#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    int a, b, c; cin >> a >> b >> c;
-    int cnt = 0; int n = b;
-    while (n > 0) {
-        cnt++;
-        n /= 10;
+    int n; cin >> n;
+    while (n--) {
+        string s; cin >> s;
+        int len = s.length();
+        int ans = 0; int sum = 0;
+        for (int i = 0; i < len; i++) {
+            if (s[i] == 'O') ans += (++sum);
+            else sum = 0;
+        }
+        cout << ans << '\n';
     }
-    int mul = 1;
-    while (cnt > 0) {
-        cnt--;
-        mul *= 10;
-    }
-    cout << a + b - c << '\n';
-    cout << a * mul + b - c;
- 
-	
     return 0;
 }
 
