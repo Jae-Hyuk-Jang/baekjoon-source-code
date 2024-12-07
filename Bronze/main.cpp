@@ -1,23 +1,27 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+int arr[15][15];
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-	string str1, str2, str3;
-	cin >> str1 >> str2 >> str3;
+    int T; cin >> T;
+    int k, n;
 
-	auto print = [](int N) {
-		if (N % 3 == 0 && N % 5 == 0) cout << "FizzBuzz" << "\n";
-		else if (N % 3 == 0) cout << "Fizz" << "\n";
-		else if (N % 5 == 0) cout << "Buzz" << "\n";
-		else cout << N << "\n";
-		};
-	if (str3 != "FizzBuzz" && str3 != "Fizz" && str3 != "Buzz") print(stoi(str3) + 1);
-	else if (str2 != "FizzBuzz" && str2 != "Fizz" && str2 != "Buzz") print(stoi(str2) + 2);
-	else print(stoi(str1) + 3);
+    for (int i = 1; i < 15; i++) arr[0][i] = i;
+
+    for (int i = 1; i < 15; i++) {
+        for (int j = 1; j < 15; j++) {
+            arr[i][j] = arr[i][j - 1] + arr[i - 1][j];
+        }
+    }
+
+    while (T--) {
+        cin >> k >> n;
+        cout << arr[k][n] << '\n';
+    }
 
     return 0;
 }
