@@ -1,39 +1,36 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int n, m;
-int arr[10];
-int num[10];
-bool isused[10];
-
-void func(int k) {
-	if (k == m) {
-		for (int i = 0; i < m; i++) cout << arr[i] << ' ';
-		cout << '\n';
-		return;
-	}
-
-	int tmp = 0;
-	for (int i = 0; i < n; i++) {
-		if (!isused[i] && tmp != num[i]) {
-			isused[i] = true;
-			arr[k] = num[i];
-			tmp = arr[k];
-			func(k + 1);
-			isused[i] = false;
-		}
-	}
-}
-
+int n, arr[25][25];
 
 int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-	cin >> n >> m;
-	for (int i = 0; i < n; i++) cin >> num[i];
-	sort(num, num + n);
-	func(0);
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> arr[i][j];
+		}
+	}
 
+	vector<int> teams(n);
+	fill(teams.begin() + n / 2, teams.end(), 1);
+
+	int ans = 1e9;
+
+	do {
+		int diff = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = i+1; j < n; j++) {
+				if (teams[i] != teams[j]) continue;
+				if (teams[i] == 0) diff += (arr[i][j] + arr[j][i]);
+				else diff -= (arr[i][j] + arr[j][i]);
+			}
+		}
+		ans = min(ans, abs(diff));
+	} while (next_permutation(teams.begin(), teams.end()));
+
+	cout << ans;
 	return 0;
 }
