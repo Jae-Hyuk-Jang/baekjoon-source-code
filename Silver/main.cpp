@@ -1,32 +1,38 @@
 #include<bits/stdc++.h>
-#define MX 101
+#define MX 100001
 using namespace std;
 
-bool mat[MX][MX];
-int N;
+
+int N,M;
+int qs[MX];
+int arr[MX];
+int res;
+int nums[MX];
 
 int main() {
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
-	cin >> N;
-	int x = 0, y = 0;
-	for (int n = 0; n < N; n++) {
-		cin >> x >> y;
-		for (int i = x; i < x + 10; i++) {
-			for (int j = y; j < y + 10; j++) {
-				mat[i][j] = 1;
-			}
-		}
-	}
+    int N; cin >> N;
+    for (int i = 0; i < N; i++) cin >> qs[i];
+    deque<int> q;
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+        if (!qs[i]) q.push_front(arr[i]);
+    }
 
-	int area = 0;
-	for (int i = 0; i < 100; i++) {
-		for (int j = 0; j < 100; j++) {
-			if (mat[i][j]) area += 1;
-		}
-	}
-	cout << area;
-	
-	return 0;
+    int M; cin >> M;
+    for (int i = 0; i < M; i++) {
+        cin >> nums[i];
+        q.push_back(nums[i]);
+    }
+
+    for (int i = 0; i < M; i++) {
+        if (!q.empty()) {
+            cout << q.front() << ' ';
+            q.pop_front();
+        }
+    }
+    
+    return 0;
 }
