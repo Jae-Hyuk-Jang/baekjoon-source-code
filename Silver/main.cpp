@@ -1,30 +1,35 @@
 #include <bits/stdc++.h>
-#define MX 200001
+#define MX 100001
 using namespace std;
+typedef long long ll;
 
-int dp[MX][26];
+int N;
+ll arr[MX];
+ll dist[MX];
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    string str; cin >> str;
-    int len = str.size();
-    for (int i = 0; i < len; i++) {
-        dp[i][str[i] - 97]++;
-        for (int j = 0; j < 26; j++) {
-            dp[i + 1][j] += dp[i][j];
+    string s; cin >> s;
+    int ans = 0, sign = 1, num = 0;
+    int N = s.size();
+    for (int i = 0; i < N; i++) {
+        if (s[i] == '+') {
+            ans += sign * num;
+            num = 0;
+        }
+        else if (s[i] == '-') {
+            ans += sign * num;
+            num = 0;
+            sign = -1;
+        }
+        else {
+            num = num * 10 + (s[i] - '0');
         }
     }
-
-    int q; cin >> q;
-    while (q--) {
-        char c; int l, r;
-        cin >> c >> l >> r;
-        if (l == 0) cout << dp[r][c - 97] << '\n';
-        else cout << dp[r][c - 97] - dp[l - 1][c - 97] << '\n';
-    }
-
+    ans += sign * num;
+    cout << ans;
 
     return 0;
 }
