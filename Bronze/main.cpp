@@ -1,24 +1,22 @@
 #include<bits/stdc++.h>
 using namespace std;
+using ll = long long;
+
+ll a = 0;
+int N;
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    double score = 0.0;
-    string str; cin >> str;
-    if (str == "F") score = 0.0;
-    if (str[0] == 'A') score += 4.0;
-    if (str[0] == 'B') score += 3.0;
-    if (str[0] == 'C') score += 2.0;
-    if (str[0] == 'D') score += 1.0;
+    string s; cin >> s;
+    N = s.size();
 
-    if (str[1] == '+') score += 0.3;
-    if (str[1] == '-') score -= 0.3;
+    for (int i = 0; i < N - 1; i++) {
+        if (s[i] != s[i + 1]) a++;
+    }
 
-    cout.precision(1);
-    cout << fixed;
-    cout << score;
+    cout << ((a == 1) ? 1 : a / 2 + a % 2);
 
     return 0;
 }

@@ -1,35 +1,27 @@
 #include <bits/stdc++.h>
-#define MX 100001
+#define MX 105
 using namespace std;
-typedef long long ll;
+using ll = long long;
 
-int N;
-ll arr[MX];
-ll dist[MX];
 
 int main() {
-    ios::sync_with_stdio(0);
+    ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    string s; cin >> s;
-    int ans = 0, sign = 1, num = 0;
-    int N = s.size();
-    for (int i = 0; i < N; i++) {
-        if (s[i] == '+') {
-            ans += sign * num;
-            num = 0;
+    priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll, ll>>> pq;
+    int N; cin >> N;
+    while (N--) {
+        int num; cin >> num;
+        if (num == 0) {
+            if (!pq.empty()) {
+                cout << pq.top().second << '\n';
+                pq.pop();
+            }
+            else cout << 0 << '\n';
+            continue;
         }
-        else if (s[i] == '-') {
-            ans += sign * num;
-            num = 0;
-            sign = -1;
-        }
-        else {
-            num = num * 10 + (s[i] - '0');
-        }
+        pq.push({ abs(num), num });
     }
-    ans += sign * num;
-    cout << ans;
 
     return 0;
 }
