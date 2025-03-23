@@ -1,63 +1,81 @@
 #include<bits/stdc++.h>
-#define MX 1000001
 using namespace std;
+using pii = pair<int, int>;
 
-int p[MX];
+bool isPuyo;
+bool vis[12][6];
+string board[12];
 
-void init(int N) {
-	for (int i = 0; i <= N; i++) p[i] = -1;
+int dy[] = { 1, 0, -1, 0 };
+int dx[] = { 0, 1, 0, -1 };
+
+int ans;
+
+
+void resetVis() {
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 6; j++) {
+			vis[i][j] = false;
+		}
+	}
 }
 
-int find(int x) {
-	if (p[x] < 0) return x;
-	return p[x] = find(p[x]);
-}
+void puyo(int x, int y) {
+	bool doErase = false;
+	vis[x][y] = true;
+	char color = board[x][y];
+	queue<pii> q;
+	vector<pii> tmp;
+	q.push({ x, y });
+	tmp.push_back({ x, y });
 
-void unite(int u, int v) {
-	u = find(u);
-	v = find(v);
-	if (u == v) return;
-	p[v] = u;
-	return;
-}
+	while (!q.empty()) {
+		pii cur = q.front(); q.pop();
+		for (int i = 0; i < 4; i++) {
+			int nx = cur.first + dx[i];
+			int ny = cur.second + dy[i];
+			if (nx < 0 || nx >= 12 || ny < 0 || ny >= 6) continue;
+			if (vis[nx][ny] || board[nx][ny] == '.' || board[nx][ny] != color) continue;
+			vis[nx][ny] = true;
+			q.push({ nx, ny }); tmp.push_back({ nx, ny });
+		}
+	}
 
-bool issame(int u, int v) {
-	return find(u) == find(v);
+	if (tmp.size() >= 4) {
+		isPuyo = true;
+		for (auto cur : tmp) board[cur.first][cur.second] = '.';
+	}
 }
 
 int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-	int N, K; cin >> N >> K;
-	init(N);
-	vector<pair<int, int>> v;
-	while (K--) {
-		int a, b; cin >> a >> b;
-		v.push_back({ a, b });
-		/*if (issame(a, b)) continue;
-		for (int i = a + 1; i <= b; i++) unite(a, i);*/
-	}
+	for (int i = 0; i < 12; i++) cin >> board[i];
 
-	sort(v.begin(), v.end());
+	do {
+		isPuyo = false;
+		for (int i = 0; i < 6; i++) {
+			int idx = -1;
+			for (int j = 11; j > -1; j--) {
+				if (board[j][i] == '.') idx = max(idx, j);
+				if (board[j][i] != '.' && idx != -1) {
+					board[idx][i] = board[j][i];
+					board[j][i] = '.';
+					idx -= 1;
+				}
+			}
+		}
 
-	int last = 0;
-	for (int i = 0; i < v.size(); i++) {
-		int s = v[i].first;
-		int e = v[i].second;
-		s = max(s, last);
-		for (int i = s; i <= e; i++) unite(s, i);
-		last = max(last, e);
-	} 
+		for (int i = 0; i < 12; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (!vis[i][j] && board[i][j] != '.') puyo(i, j);
+			}
+		}
+		if (isPuyo) ++ans;
+		resetVis();
+	} while (isPuyo);
+	cout << ans;
 
-	int ans = 0;
-	for (int i = 1; i <= N; i++) {
-		if (p[i] == -1) ans++;
-	}
-	cout << ans << endl;
-	//for (int i = 1; i <= N; i++) {
-	//	cout << p[i] << ' ';
-	//}
-	//cout << endl;
 	return 0;
 }
