@@ -2,80 +2,106 @@
 using namespace std;
 using pii = pair<int, int>;
 
-bool isPuyo;
-bool vis[12][6];
-string board[12];
+#define MX 101
+#define X first
+#define Y second
 
-int dy[] = { 1, 0, -1, 0 };
-int dx[] = { 0, 1, 0, -1 };
+int n;
+vector<vector<int>> arr;
+int dir[4][2] = { {0, 1}, {0, -1}, {1, 0}, {-1, 0} };
+int scores[5] = { 0, 1, 10, 100, 1000 };
+vector<int> p[401];
 
-int ans;
+int v[401][401], f[401][401];
 
-
-void resetVis() {
-	for (int i = 0; i < 12; i++) {
-		for (int j = 0; j < 6; j++) {
-			vis[i][j] = false;
+void init() {
+	for (int i = 0; i <= n; i++) {
+		for (int j = 0; j <= n; j++) {
+			v[i][j] = 0;
+			f[i][j] = 0;
 		}
 	}
 }
 
-void puyo(int x, int y) {
-	bool doErase = false;
-	vis[x][y] = true;
-	char color = board[x][y];
-	queue<pii> q;
-	vector<pii> tmp;
-	q.push({ x, y });
-	tmp.push_back({ x, y });
+void solve(int idx, vector<int> p[]) {
+	init();
+	int max = -1, mr = 0, mc = 0, fcnt = 0, cnt = 0;
 
-	while (!q.empty()) {
-		pii cur = q.front(); q.pop();
-		for (int i = 0; i < 4; i++) {
-			int nx = cur.first + dx[i];
-			int ny = cur.second + dy[i];
-			if (nx < 0 || nx >= 12 || ny < 0 || ny >= 6) continue;
-			if (vis[nx][ny] || board[nx][ny] == '.' || board[nx][ny] != color) continue;
-			vis[nx][ny] = true;
-			q.push({ nx, ny }); tmp.push_back({ nx, ny });
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (arr[i][j] != 0) continue;
+			cnt = 0;
+			fcnt = 0;
+			for (int d = 0; d < 4; d++) {
+				int nx = i + dir[d][0];
+				int ny = j + dir[d][1];
+				if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
+				if (arr[nx][ny] == 0) cnt++;
+				for (int k = 0; k < 4; k++) {
+					if (arr[nx][ny] == p[idx][k]) fcnt++;
+				}
+			}
+
+			v[i][j] = cnt, f[i][j] = fcnt;
+
+			if (max < fcnt) {
+				max = fcnt, mr = i, mc = j;
+			}
+			else if (max == fcnt) {
+				if (v[i][j] > v[mr][mc]) {
+					mr = i, mc = j;
+				}
+				else if (v[i][j] == v[mr][mc]) {
+					if (i < mr) {
+						mr = i, mc = j;
+					}
+					else if (i == mr) {
+						if (j < mc) {
+							mr = i, mc = j;
+						}
+					}
+				}
+			}
 		}
 	}
-
-	if (tmp.size() >= 4) {
-		isPuyo = true;
-		for (auto cur : tmp) board[cur.first][cur.second] = '.';
-	}
+	arr[mr][mc] = idx;
 }
 
 int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-	for (int i = 0; i < 12; i++) cin >> board[i];
+	cin >> n;
+	arr.resize(n, vector<int>(n, 0));
+	int idx, a;
 
-	do {
-		isPuyo = false;
-		for (int i = 0; i < 6; i++) {
-			int idx = -1;
-			for (int j = 11; j > -1; j--) {
-				if (board[j][i] == '.') idx = max(idx, j);
-				if (board[j][i] != '.' && idx != -1) {
-					board[idx][i] = board[j][i];
-					board[j][i] = '.';
-					idx -= 1;
+	for (int i = 0; i < n * n; i++) {
+		cin >> idx;
+		for (int j = 0; j < 4; j++) {
+			cin >> a;
+			p[idx].push_back(a);
+		}
+		solve(idx, p);
+	}
+
+	int answer = 0, value = 0, cnt = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			value = arr[i][j];
+			cnt = 0;
+			for (int k = 0; k < 4; k++) {
+				int nx = i + dir[k][0];
+				int ny = j + dir[k][1];
+				if (nx < 0 || nx >= n || ny < 0 || ny >= n)continue;
+				for (int z = 0; z < 4; z++) {
+					if (arr[nx][ny] == p[value][z]) cnt++;
 				}
 			}
+			answer += scores[cnt];
 		}
+	}
+	cout << answer;
 
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 6; j++) {
-				if (!vis[i][j] && board[i][j] != '.') puyo(i, j);
-			}
-		}
-		if (isPuyo) ++ans;
-		resetVis();
-	} while (isPuyo);
-	cout << ans;
 
 	return 0;
 }
