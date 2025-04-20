@@ -1,29 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, s;
-int arr[30];
-int cnt = 0;
-
-void func(int cur, int tot) {
-	if (cur == n) {
-		if (tot == s) cnt++;
-		return;
-	}
-
-	func(cur + 1, tot);
-	func(cur + 1, tot + arr[cur]);
-}
+int dp[1005];
+string ans[]{ "SK", "CY" };
+int cand[] = { 1, 3, 4 };
 
 int main()
 {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
-	cin >> n >> s;
-	for (int i = 0; i < n; i++) cin >> arr[i];
-	func(0, 0);
-	if (s == 0) cnt--;
-	cout << cnt;
+	
+	int n; cin >> n;
+	dp[1] = 0, dp[2] = 1, dp[3] = 0, dp[4] = 0;
+
+	for (int i = 5; i <= n; i++) {
+		for (int j : cand) {
+			if (dp[i - j] == 1) {
+				dp[i] = 0; break;
+			}
+			else dp[i] = 1;
+		}
+	}
+	cout << ans[dp[n]];
 	
 	return 0;
 }
