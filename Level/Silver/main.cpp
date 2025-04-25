@@ -1,27 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dp[1005];
-string ans[]{ "SK", "CY" };
-int cand[] = { 1, 3, 4 };
+int n, m;
+int d[50][4];
+string a = "ACGT";
 
 int main()
 {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
-	
-	int n; cin >> n;
-	dp[1] = 0, dp[2] = 1, dp[3] = 0, dp[4] = 0;
 
-	for (int i = 5; i <= n; i++) {
-		for (int j : cand) {
-			if (dp[i - j] == 1) {
-				dp[i] = 0; break;
-			}
-			else dp[i] = 1;
+	cin >> n >> m;
+	while (n--) {
+		string s; cin >> s;
+		for (int i = 0; i < m; i++) {
+			int j = a.find(s[i]);
+			d[i][j]++;
 		}
 	}
-	cout << ans[dp[n]];
-	
+
+	int sum = 0;
+	for (int i = 0; i < m; i++) {
+		int mx = -1, idx = -1;
+		for (int j = 0; j < 4; j++) {
+			sum += d[i][j];
+			if (mx >= d[i][j]) continue;
+			mx = d[i][j];
+			idx = j;
+		}
+		sum -= mx;
+		cout << a[idx];
+	}
+	cout << '\n' << sum;
 	return 0;
 }
