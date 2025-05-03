@@ -21,7 +21,7 @@ int main() {
 	while (t < 1201) {
 		int nxt_t = t;
 		for (int i = 0; i < n; i++) {
-			if (flower[i].x < t && flower[i].y > nxt_t) nxt_t = flower[i].y;
+			if (flower[i].x <= t && flower[i].y > nxt_t) nxt_t = flower[i].y;
 		}
 
 		if (nxt_t == t) {

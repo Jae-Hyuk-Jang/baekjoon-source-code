@@ -1,23 +1,21 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll = long long;
-
-ll a = 0;
-int N;
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
-    string s; cin >> s;
-    N = s.size();
+    int a, b, c = 0;
+    int t; cin >> t;
 
-    for (int i = 0; i < N - 1; i++) {
-        if (s[i] != s[i + 1]) a++;
+    if (t % 10 != 0) cout << "-1";
+    else {
+        a = t / 300;
+        b = (t % 300) / 60;
+        c = ((t % 300) % 60) / 10;
+        cout << a << " " << b << " " << c;
     }
-
-    cout << ((a == 1) ? 1 : a / 2 + a % 2);
-
+  
     return 0;
 }
 
